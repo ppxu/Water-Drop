@@ -19,11 +19,22 @@
       <p class="title">说明：</p>
       <textarea rows=3 v-model="description" placeholder="说点啥～"></textarea>
     </div>
-    <button v-on:click="submit">提交</button>
+    <button :disabled="disable" v-on:click="submit">提交</button>
+    <div :class="[{ 'show': isShow }, 'tip']">{{ tip }}</div>
   </div>
 </template>
 
 <script>
+
+import AV from 'leancloud-storage'
+
+const appId = '883Ml4hpEll5MVigAMlv5W3v-gzGzoHsz'
+const appKey = '1wXte4OPEo8xazj2GIoYkjSI'
+
+AV.init({ appId, appKey })
+
+const TestObject = AV.Object.extend('Waters');
+const testObject = new TestObject();
 
 const getTab = (callback) => {
   chrome.tabs.query({
@@ -79,6 +90,9 @@ export default {
       categories: categories,
       category: '',
       description: '',
+      tip: '',
+      isShow: false,
+      disable: false
     };
   },
   created () {
@@ -93,6 +107,7 @@ export default {
     },
 
     submit () {
+      this.disable = true;
       const post = {
         url: this.url,
         title: this.title,
@@ -101,6 +116,20 @@ export default {
       };
 
       console.log(post);
+      testObject.save(post).then(() => {
+        this.showTip('提交成功');
+      }, () => {
+        this.showTip('提交失败');
+      })
+    },
+
+    showTip (txt) {
+      this.tip = txt;
+      this.isShow = true;
+      window.setTimeout(() => {
+        this.isShow = false;
+        this.disable = false;
+      }, 1000);
     }
   }
 }
@@ -116,6 +145,8 @@ export default {
   width: 300px;
   min-height: 320px;
   margin: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
 .detail {
@@ -161,4 +192,25 @@ button {
 button:hover {
   background-color: #42b983;
 }
+
+.tip {
+  position: absolute;
+  top: -25px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  background-color: #4fc08d;
+  color: #fff;
+  height: 25px;
+  line-height: 25px;
+  transition: all 0.5s;
+}
+
+.show {
+  top: 0;
+}
+
+
 </style>
