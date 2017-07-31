@@ -91,6 +91,7 @@ export default {
     getContent (callback) {
       getTab(callback);
     },
+
     submit () {
       const post = {
         url: this.url,

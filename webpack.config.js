@@ -4,8 +4,8 @@ var webpack = require('webpack')
 module.exports = {
   entry: './src/main.js',
   output: {
-    path: path.resolve(__dirname),
-    publicPath: '/',
+    path: path.resolve(__dirname, './chrome'),
+    publicPath: '/chrome/',
     filename: 'popup.js'
   },
   module: {
