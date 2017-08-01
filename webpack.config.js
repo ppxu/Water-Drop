@@ -2,11 +2,14 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './src/main.js',
+  entry: {
+    popup: './src/popup.js',
+    list: './src/list.js',
+  },
   output: {
     path: path.resolve(__dirname, './chrome'),
     publicPath: '/chrome/',
-    filename: 'popup.js'
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -32,11 +35,6 @@ module.exports = {
         }
       }
     ]
-  },
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js'
-    }
   },
   devServer: {
     historyApiFallback: true,

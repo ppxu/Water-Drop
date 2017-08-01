@@ -20,6 +20,7 @@
       <textarea rows=3 v-model="description" placeholder="说点啥～"></textarea>
     </div>
     <button :disabled="disable" v-on:click="submit">提交</button>
+    <button v-on:click="query">查看列表</button>
     <div :class="[{ 'show': isShow }, 'tip']">{{ tip }}</div>
   </div>
 </template>
@@ -33,8 +34,8 @@ const appKey = '1wXte4OPEo8xazj2GIoYkjSI'
 
 AV.init({ appId, appKey })
 
-const TestObject = AV.Object.extend('Waters');
-const testObject = new TestObject();
+const AVObject = AV.Object.extend('Waters');
+const db = new AVObject();
 
 const getTab = (callback) => {
   chrome.tabs.query({
@@ -82,7 +83,7 @@ const categories = [
 ];
 
 export default {
-  name: 'app',
+  name: 'popup',
   data () {
     return {
       url: '',
@@ -116,7 +117,7 @@ export default {
       };
 
       console.log(post);
-      testObject.save(post).then(() => {
+      db.save(post).then(() => {
         this.showTip('提交成功');
       }, () => {
         this.showTip('提交失败');
@@ -130,6 +131,12 @@ export default {
         this.isShow = false;
         this.disable = false;
       }, 1000);
+    },
+
+    query () {
+      chrome.tabs.create({
+        url: './list.html'
+      });
     }
   }
 }
@@ -184,7 +191,8 @@ button {
   color: #fff;
   width: 60px;
   height: 30px;
-  margin-left: 80%;
+  float: right;
+  margin-right: 10px;
   outline: none;
   cursor: pointer;
 }

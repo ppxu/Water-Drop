@@ -12,6 +12,6 @@
     "default_title": "drop a water"
   },
   "permissions": [
-    "activeTab"
+    "activeTab", "tabs"
   ]
 }
