@@ -89,7 +89,7 @@ export default {
       url: '',
       title: '',
       categories: categories,
-      category: '',
+      category: 'other',
       description: '',
       tip: '',
       isShow: false,
@@ -189,7 +189,7 @@ button {
   border: none;
   border-radius: 4px;
   color: #fff;
-  width: 60px;
+  width: 70px;
   height: 30px;
   float: right;
   margin-right: 10px;
