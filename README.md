@@ -1,18 +1,23 @@
-# water-drop
+# Water-Drop
 
-> collect water drop from internet
+> Collect Water Drop From Internet
 
-## Build Setup
+## Usage
 
-``` bash
-# install dependencies
-npm install
+* [点击下载](https://github.com/ppxu/Water-Drop/archive/1.0.0.zip)
 
-# serve with hot reload at localhost:8080
-npm run dev
+* 解压
 
-# build for production with minification
-npm run build
-```
+* chrome 打开 chrome://extensions/
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+* 勾选 __开发者模式__
+
+* 点击 __加载已解压的扩展程序__
+
+* 选择之前解压目录下的 __chrome__ 文件夹
+
+* ready
+
+## Screenshot
+
+![water](./water.png)
