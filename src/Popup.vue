@@ -34,16 +34,16 @@ const appKey = '1wXte4OPEo8xazj2GIoYkjSI'
 
 AV.init({ appId, appKey })
 
-const AVObject = AV.Object.extend('Waters');
-const db = new AVObject();
+const AVObject = AV.Object.extend('Waters')
+const db = new AVObject()
 
 const getTab = (callback) => {
   chrome.tabs.query({
     active: true,
     currentWindow: true
   }, tabs => {
-    const tab = tabs[0];
-    callback(tab);
+    const tab = tabs[0]
+    callback(tab)
   });
 }
 
@@ -79,8 +79,8 @@ const categories = [
   {
     key: 'other',
     label: '其他'
-  },
-];
+  }
+]
 
 export default {
   name: 'popup',
@@ -94,49 +94,48 @@ export default {
       tip: '',
       isShow: false,
       disable: false
-    };
+    }
   },
   created () {
     this.getContent(tab => {
-      this.url = tab.url;
-      this.title = tab.title;
-    });
+      this.url = tab.url
+      this.title = tab.title
+    })
   },
   methods: {
     getContent (callback) {
-      getTab(callback);
+      getTab(callback)
     },
 
     submit () {
-      this.disable = true;
+      this.disable = true
       const post = {
         url: this.url,
         title: this.title,
         category: this.category,
         description: this.description
-      };
+      }
 
-      console.log(post);
       db.save(post).then(() => {
-        this.showTip('提交成功');
+        this.showTip('提交成功')
       }, () => {
-        this.showTip('提交失败');
+        this.showTip('提交失败')
       })
     },
 
     showTip (txt) {
-      this.tip = txt;
-      this.isShow = true;
+      this.tip = txt
+      this.isShow = true
       window.setTimeout(() => {
-        this.isShow = false;
-        this.disable = false;
-      }, 1000);
+        this.isShow = false
+        this.disable = false
+      }, 1000)
     },
 
     query () {
       chrome.tabs.create({
         url: './list.html'
-      });
+      })
     }
   }
 }
