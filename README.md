@@ -4,7 +4,7 @@
 
 ## Usage
 
-* [点击下载](https://github.com/ppxu/Water-Drop/archive/1.2.0.zip)
+* [点击下载](https://github.com/ppxu/Water-Drop/archive/1.3.0.zip)
 
 * 解压
 
@@ -20,4 +20,4 @@
 
 ## Screenshot
 
-![water](./water.png)
+![screenshot](./screenshot.png)

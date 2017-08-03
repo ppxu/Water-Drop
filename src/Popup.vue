@@ -17,7 +17,7 @@
     </div>
     <div class="detail">
       <p class="title">说明：</p>
-      <textarea rows=3 v-model="description" placeholder="说点啥～"></textarea>
+      <textarea rows="3" v-model="description" placeholder="说点啥～"></textarea>
     </div>
     <button :disabled="disable" v-on:click="submit">提交</button>
     <button v-on:click="query">查看列表</button>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-
 import AV from 'leancloud-storage'
 
 const appId = '883Ml4hpEll5MVigAMlv5W3v-gzGzoHsz'
@@ -34,8 +33,8 @@ const appKey = '1wXte4OPEo8xazj2GIoYkjSI'
 
 AV.init({ appId, appKey })
 
-const AVObject = AV.Object.extend('Waters')
-const db = new AVObject()
+const WaterObject = AV.Object.extend('Waters')
+const water = new WaterObject()
 
 const getTab = (callback) => {
   chrome.tabs.query({
@@ -44,7 +43,7 @@ const getTab = (callback) => {
   }, tabs => {
     const tab = tabs[0]
     callback(tab)
-  });
+  })
 }
 
 const categories = [
@@ -116,7 +115,7 @@ export default {
         description: this.description
       }
 
-      db.save(post).then(() => {
+      water.save(post).then(() => {
         this.showTip('提交成功')
       }, () => {
         this.showTip('提交失败')
@@ -126,6 +125,7 @@ export default {
     showTip (txt) {
       this.tip = txt
       this.isShow = true
+
       window.setTimeout(() => {
         this.isShow = false
         this.disable = false
@@ -202,7 +202,7 @@ button:hover {
 
 .tip {
   position: absolute;
-  top: -25px;
+  top: -30px;
   left: 0;
   width: 100%;
   height: 20px;
@@ -210,14 +210,12 @@ button:hover {
   text-align: center;
   background-color: #4fc08d;
   color: #fff;
-  height: 25px;
-  line-height: 25px;
-  transition: all 0.5s;
+  height: 30px;
+  line-height: 30px;
+  transition: all .5s ease-out;
 }
 
 .show {
   top: 0;
 }
-
-
 </style>

@@ -20,7 +20,7 @@
           <a :href="post.url" target="_blank">
             {{post.title}}
           </a>
-          <span>{{post.updatedAt.slice(0, 10)}}</span>
+          <span>{{post.createdAt.slice(0, 10)}}</span>
           <blockquote>{{post.description}}</blockquote>
         </li>
       </ul>
@@ -29,7 +29,6 @@
 </template>
 
 <script>
-
 import moment from 'moment'
 import AV from 'leancloud-storage'
 
@@ -37,9 +36,6 @@ const appId = '883Ml4hpEll5MVigAMlv5W3v-gzGzoHsz'
 const appKey = '1wXte4OPEo8xazj2GIoYkjSI'
 
 AV.init({ appId, appKey })
-
-const AVObject = AV.Object.extend('Waters')
-const db = new AVObject()
 
 const categories = [
   {
@@ -84,7 +80,6 @@ export default {
   data () {
     return {
       categories: categories,
-      fulllist: [],
       list: [],
       range: [new Date(start), new Date(end)],
       pickerOptions: {
@@ -95,35 +90,46 @@ export default {
     }
   },
   created () {
-    const loading = this.$loading({
-      fullscreen: true
-    })
-
-    db.fetch().then((res) => {
-      loading.close();
-      this.$message({
-        message: '数据加载成功',
-        type: 'success'
-      })
-      this.fulllist = res.toJSON().results
-      this.filter(start, end)
-    }, (e) => {
-      console.log(e)
-      this.$message.error(e.toString())
-    })
+    this.load(start, end)
   },
   methods: {
     change () {
       const newStart = moment(this.range[0]).startOf('day')
       const newEnd = moment(this.range[1]).endOf('day')
-      this.filter(newStart, newEnd)
+
+      this.load(newStart, newEnd)
     },
 
-    filter (start, end) {
-      this.list = this.fulllist.filter(t => {
-        const updated = new Date(t.updatedAt).valueOf()
-        return (updated > start.valueOf() && updated < end.valueOf())
+    load (start, end) {
+      const loading = this.$loading({
+        fullscreen: true
       })
+
+      this.query(start, end).then((res) => {
+        loading.close()
+
+        this.$message({
+          message: '数据加载成功',
+          type: 'success'
+        })
+
+        this.list = res.map(t => t.toJSON())
+      }, (e) => {
+        console.log(e)
+        this.$message.error(e.toString())
+      })
+    },
+
+    query (start, end) {
+      const startQuery = new AV.Query('Waters')
+      startQuery.greaterThan('createdAt', new Date(start))
+
+      const endQuery = new AV.Query('Waters')
+      endQuery.lessThan('createdAt', new Date(end))
+
+      const query = AV.Query.and(startQuery, endQuery)
+
+      return query.find()
     }
   }
 }
@@ -141,6 +147,16 @@ export default {
   position: relative;
 }
 
+h1 {
+  margin-bottom: 50px;
+}
+
+.datepicker {
+  position: absolute;
+  top: 10px;
+  right: 100px;
+}
+
 a {
   display: inline-block;
   color: #42b983;
@@ -153,15 +169,5 @@ blockquote {
   margin: 10px;
   border-left: 4px solid #e2e3e4;
   line-height: 25px;
-}
-
-h1 {
-  margin-bottom: 40px;
-}
-
-.datepicker {
-  position: absolute;
-  top: 10px;
-  right: 100px;
 }
 </style>
