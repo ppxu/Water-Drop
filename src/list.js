@@ -1,8 +1,10 @@
 import Vue from 'vue'
-import { DatePicker, Message } from 'element-ui'
+import { DatePicker, Message, Loading } from 'element-ui'
 import List from './List.vue'
 
 Vue.use(DatePicker)
+
+Vue.prototype.$loading = Loading.service
 
 Vue.prototype.$message = Message
 

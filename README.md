@@ -4,7 +4,7 @@
 
 ## Usage
 
-* [点击下载](https://github.com/ppxu/Water-Drop/archive/1.0.0.zip)
+* [点击下载](https://github.com/ppxu/Water-Drop/archive/1.2.0.zip)
 
 * 解压
 

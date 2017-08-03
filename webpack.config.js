@@ -8,7 +8,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, './chrome'),
-    publicPath: '/chrome/',
+    publicPath: '/',
     filename: '[name].js'
   },
   module: {

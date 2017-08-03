@@ -95,9 +95,14 @@ export default {
     }
   },
   created () {
+    const loading = this.$loading({
+      fullscreen: true
+    })
+
     db.fetch().then((res) => {
+      loading.close();
       this.$message({
-        message: '加载成功',
+        message: '数据加载成功',
         type: 'success'
       })
       this.fulllist = res.toJSON().results
