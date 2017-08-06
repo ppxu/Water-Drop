@@ -1,6 +1,8 @@
 import Vue from 'vue'
-import { DatePicker, Message, Loading } from 'element-ui'
+import { Button, DatePicker, Message, Loading } from 'element-ui'
 import List from './List.vue'
+
+Vue.use(Button)
 
 Vue.use(DatePicker)
 

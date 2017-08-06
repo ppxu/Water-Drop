@@ -3,7 +3,7 @@
 
   "name": "Water Drop",
   "description": "Collect Water Drop From Internet",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "icons": { "128": "icon_128.png" },
 
   "browser_action": {

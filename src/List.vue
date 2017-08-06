@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Water Drop</h1>
-    <div class="datepicker">
+    <div class="toolbar">
       <el-date-picker
         v-model="range"
         :editable=false
@@ -10,8 +10,9 @@
         placeholder="选择日期范围"
         type="daterange"
         :picker-options="pickerOptions"
-        v-on:change="change">
+        @change="change">
       </el-date-picker>
+      <el-button type="success" size="small" @click="weekly">Export Weekly</el-button>
     </div>
     <div v-for="cate in categories">
       <h2 :id="cate.key">{{cate.label}}</h2>
@@ -72,8 +73,8 @@ const categories = [
   },
 ]
 
-const start = moment().day(-1).startOf('day')
-const end = moment().day(5).endOf('day')
+const _start = moment().day(-2).startOf('day')
+const _end = moment().day(5).endOf('day')
 
 export default {
   name: 'list',
@@ -81,7 +82,9 @@ export default {
     return {
       categories: categories,
       list: [],
-      range: [new Date(start), new Date(end)],
+      range: [new Date(_start), new Date(_end)],
+      start: _start.format('YYMMDD'),
+      end: _end.format('YYMMDD'),
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > end.valueOf()
@@ -90,12 +93,15 @@ export default {
     }
   },
   created () {
-    this.load(start, end)
+    this.load(_start, _end)
   },
   methods: {
     change () {
       const newStart = moment(this.range[0]).startOf('day')
       const newEnd = moment(this.range[1]).endOf('day')
+
+      this.start = newStart.format('YYMMDD');
+      this.end = newEnd.format('YYMMDD');
 
       this.load(newStart, newEnd)
     },
@@ -130,6 +136,25 @@ export default {
       const query = AV.Query.and(startQuery, endQuery)
 
       return query.find()
+    },
+
+    weekly () {
+      let md = ''
+      categories.forEach(c => {
+        let str = `## **${c.label}**\n\n`
+        this.list.filter(t => t.category === c.key).forEach(p => {
+          str += `* [${p.title}](${p.url})\n\n> ${p.description}\n\n`
+        })
+        md += str
+      })
+
+      const blob = new Blob([md])
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.download = `${this.start}-${this.end}.md`
+      a.href = url
+      a.click()
+      URL.revokeObjectURL(url)
     }
   }
 }
@@ -151,10 +176,10 @@ h1 {
   margin-bottom: 50px;
 }
 
-.datepicker {
+.toolbar {
   position: absolute;
   top: 10px;
-  right: 100px;
+  right: 10px;
 }
 
 a {
