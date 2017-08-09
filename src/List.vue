@@ -2,17 +2,15 @@
   <div id="app">
     <h1>Water Drop</h1>
     <div class="toolbar">
-      <el-date-picker
-        v-model="range"
-        :editable=false
-        :clearable=false
-        size="small"
-        placeholder="选择日期范围"
-        type="daterange"
-        :picker-options="pickerOptions"
-        @change="change">
-      </el-date-picker>
-      <el-button type="success" size="small" @click="weekly">Export Weekly</el-button>
+      <el-select v-model="version" placeholder="请选择" @change="change">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <el-button type="success" @click="weekly">Export Weekly</el-button>
     </div>
     <div v-for="cate in categories">
       <h2 :id="cate.key">{{cate.label}}</h2>
@@ -70,11 +68,11 @@ const categories = [
   {
     key: 'other',
     label: '其他'
-  },
+  }
 ]
 
-const _start = moment().day(-2).startOf('day')
-const _end = moment().day(5).endOf('day')
+const _start = '2017-07-28'
+const _ver = 1015
 
 export default {
   name: 'list',
@@ -82,34 +80,44 @@ export default {
     return {
       categories: categories,
       list: [],
-      range: [new Date(_start), new Date(_end)],
-      start: _start.format('YYMMDD'),
-      end: _end.format('YYMMDD'),
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > end.valueOf()
-        }
-      }
+      version: '',
+      options: []
     }
   },
   created () {
-    this.load(_start, _end)
+    const vers = this.genVers()
+    this.options = vers.map(t => ({
+      value: `${t.start}&${t.end}`,
+      label: `第${t.version}期（${t.start} ~ ${t.end}）`
+    }))
+    this.version = this.options[vers.length - 1].value
+    this.load(this.version)
   },
   methods: {
     change () {
-      const newStart = moment(this.range[0]).startOf('day')
-      const newEnd = moment(this.range[1]).endOf('day')
-
-      this.start = newStart.format('YYMMDD');
-      this.end = newEnd.format('YYMMDD');
-
-      this.load(newStart, newEnd)
+      this.load(this.version)
     },
 
-    load (start, end) {
+    genVers () {
+      const days = moment().diff(moment(_start), 'days')
+      const vers = Math.ceil(days / 7)
+      const opts = new Array(vers).fill('').map((t, idx) => ({
+        version: _ver + idx,
+        start: moment(_start).add(7 * idx, 'days').format('YYYY-MM-DD'),
+        end: moment(_start).add(7 * (idx + 1), 'days').format('YYYY-MM-DD')
+      }))
+      return opts
+    },
+
+    load (version) {
       const loading = this.$loading({
         fullscreen: true
       })
+
+      let [start, end] = version.split('&')
+
+      start = moment(start).startOf('day')
+      end = moment(end).endOf('day')
 
       this.query(start, end).then((res) => {
         loading.close()
@@ -194,5 +202,9 @@ blockquote {
   margin: 10px;
   border-left: 4px solid #e2e3e4;
   line-height: 25px;
+}
+
+.el-select {
+  width: 300px;
 }
 </style>

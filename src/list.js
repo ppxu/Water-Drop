@@ -1,10 +1,12 @@
 import Vue from 'vue'
-import { Button, DatePicker, Message, Loading } from 'element-ui'
+import { Button, Select, Option, Message, Loading } from 'element-ui'
 import List from './List.vue'
 
 Vue.use(Button)
 
-Vue.use(DatePicker)
+Vue.use(Select)
+
+Vue.use(Option)
 
 Vue.prototype.$loading = Loading.service
 
