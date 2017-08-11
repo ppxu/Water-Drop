@@ -159,7 +159,7 @@ export default {
       const blob = new Blob([md])
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
-      a.download = `${this.start}-${this.end}.md`
+      a.download = `${this.version}.md`
       a.href = url
       a.click()
       URL.revokeObjectURL(url)
