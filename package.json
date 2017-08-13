@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "element-ui": "^1.4.2",
-    "leancloud-storage": "^3.0.4",
+    "leancloud-storage": "^3.1.0",
     "moment": "^2.18.1",
     "vue": "^2.3.3"
   },
@@ -25,7 +25,7 @@
     "style-loader": "^0.18.2",
     "vue-loader": "^13.0.4",
     "vue-template-compiler": "^2.3.3",
-    "webpack": "^3.5.2",
+    "webpack": "^3.5.4",
     "webpack-dev-server": "^2.7.1"
   }
 }
