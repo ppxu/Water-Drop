@@ -11,7 +11,7 @@
     <div class="detail">
       <p class="title">分类：</p>
       <span v-for="cate in categories">
-        <input type="radio" :id="cate.key" :value="cate.key" v-model="category">
+        <input type="radio" :id="cate.key" :value="cate.key" v-model="category" />
         <label :for="cate.key">{{cate.label}}</label>
       </span>
     </div>
@@ -35,16 +35,6 @@ AV.init({ appId, appKey })
 
 const WaterObject = AV.Object.extend('Waters')
 const water = new WaterObject()
-
-const getTab = (callback) => {
-  chrome.tabs.query({
-    active: true,
-    currentWindow: true
-  }, tabs => {
-    const tab = tabs[0]
-    callback(tab)
-  })
-}
 
 const categories = [
   {
@@ -103,7 +93,13 @@ export default {
   },
   methods: {
     getContent (callback) {
-      getTab(callback)
+      chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      }, tabs => {
+        const tab = tabs[0]
+        callback(tab)
+      })
     },
 
     submit () {
@@ -147,7 +143,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
-  color: #2c3e50;
+  color: #1f2d3d;
   width: 300px;
   min-height: 320px;
   margin: 20px;
@@ -184,7 +180,7 @@ textarea {
 }
 
 button {
-  background-color: #4fc08d;
+  background-color: #20a0ff;
   border: none;
   border-radius: 4px;
   color: #fff;
@@ -197,7 +193,7 @@ button {
 }
 
 button:hover {
-  background-color: #42b983;
+  background-color: #4db3ff;
 }
 
 .tip {
@@ -208,7 +204,7 @@ button:hover {
   height: 20px;
   line-height: 20px;
   text-align: center;
-  background-color: #4fc08d;
+  background-color: #20a0ff;
   color: #fff;
   height: 30px;
   line-height: 30px;

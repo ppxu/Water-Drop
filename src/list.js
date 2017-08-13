@@ -8,9 +8,9 @@ Vue.use(Select)
 
 Vue.use(Option)
 
-Vue.prototype.$loading = Loading.service
-
 Vue.prototype.$message = Message
+
+Vue.prototype.$loading = Loading.service
 
 new Vue({
   el: '#app',

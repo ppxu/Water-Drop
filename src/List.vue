@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <h1>Water Drop</h1>
+    <h1>
+      <img src="./assets/icon_128.png" />
+      Water Drop
+    </h1>
     <div class="toolbar">
       <el-select v-model="version" placeholder="请选择" @change="change">
         <el-option
@@ -10,7 +13,7 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <el-button type="success" @click="weekly">Export Weekly</el-button>
+      <el-button type="primary" @click="weekly">Export Weekly</el-button>
     </div>
     <div v-for="cate in categories">
       <h2 :id="cate.key">{{cate.label}}</h2>
@@ -86,11 +89,13 @@ export default {
   },
   created () {
     const vers = this.genVers()
+
     this.options = vers.map(t => ({
-      value: `${t.start}&${t.end}`,
+      value: `${t.start}~${t.end}`,
       label: `第${t.version}期（${t.start} ~ ${t.end}）`
     }))
     this.version = this.options[vers.length - 1].value
+
     this.load(this.version)
   },
   methods: {
@@ -100,12 +105,14 @@ export default {
 
     genVers () {
       const days = moment().diff(moment(_start), 'days')
-      const vers = Math.ceil(days / 7)
-      const opts = new Array(vers).fill('').map((t, idx) => ({
+      const sum = Math.ceil(days / 7)
+
+      const opts = new Array(sum).fill('').map((t, idx) => ({
         version: _ver + idx,
         start: moment(_start).add(7 * idx, 'days').format('YYYY-MM-DD'),
         end: moment(_start).add(7 * (idx + 1), 'days').format('YYYY-MM-DD')
       }))
+
       return opts
     },
 
@@ -114,10 +121,10 @@ export default {
         fullscreen: true
       })
 
-      let [start, end] = version.split('&')
+      let [start, end] = version.split('~')
 
-      start = moment(start).startOf('day')
-      end = moment(end).endOf('day')
+      start = moment(start).hour(12)
+      end = moment(end).hour(12)
 
       this.query(start, end).then((res) => {
         loading.close()
@@ -129,7 +136,8 @@ export default {
 
         this.list = res.map(t => t.toJSON())
       }, (e) => {
-        console.log(e)
+        loading.close()
+
         this.$message.error(e.toString())
       })
     },
@@ -148,11 +156,14 @@ export default {
 
     weekly () {
       let md = ''
+
       categories.forEach(c => {
         let str = `## **${c.label}**\n\n`
+
         this.list.filter(t => t.category === c.key).forEach(p => {
           str += `* [${p.title}](${p.url})\n\n> ${p.description}\n\n`
         })
+
         md += str
       })
 
@@ -174,14 +185,20 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
-  color: #2c3e50;
+  color: #1f2d3d;
   width: 1000px;
   margin: 50px auto;
   position: relative;
 }
 
 h1 {
+  height: 50px;
   margin-bottom: 50px;
+}
+
+img {
+  height: 50px;
+  vertical-align: bottom;
 }
 
 .toolbar {
@@ -192,19 +209,24 @@ h1 {
 
 a {
   display: inline-block;
-  color: #42b983;
+  color: #20a0ff;
   margin-right: 20px;
   line-height: 30px;
+}
+
+a:hover {
+  color: #4db3ff;
 }
 
 blockquote {
   padding-left: 20px;
   margin: 10px;
   border-left: 4px solid #e2e3e4;
-  line-height: 25px;
+  line-height: 30px;
 }
 
 .el-select {
   width: 300px;
+  margin-right: 10px;
 }
 </style>
