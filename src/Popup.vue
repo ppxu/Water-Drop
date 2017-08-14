@@ -66,6 +66,10 @@ const categories = [
     label: '资源'
   },
   {
+    key: 'interview',
+    label: '面试'
+  },
+  {
     key: 'other',
     label: '其他'
   }

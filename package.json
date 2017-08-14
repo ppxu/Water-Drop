@@ -1,7 +1,7 @@
 {
   "name": "Water-Drop",
   "description": "Collect Water Drop From Internet",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "author": "PPxu <xyang0110@126.com>",
   "private": true,
   "scripts": {
