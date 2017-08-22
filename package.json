@@ -1,7 +1,7 @@
 {
   "name": "Water-Drop",
   "description": "Collect Water Drop From Internet",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "author": "PPxu <xyang0110@126.com>",
   "private": true,
   "scripts": {
@@ -15,17 +15,17 @@
     "vue": "^2.3.3"
   },
   "devDependencies": {
-    "babel-core": "^6.0.0",
-    "babel-loader": "^7.1.1",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "babel-plugin-component": "^0.10.0",
     "babel-preset-env": "^1.5.1",
     "cross-env": "^5.0.5",
-    "css-loader": "^0.28.4",
+    "css-loader": "^0.28.5",
     "file-loader": "^0.11.2",
     "style-loader": "^0.18.2",
     "vue-loader": "^13.0.4",
     "vue-template-compiler": "^2.3.3",
-    "webpack": "^3.5.4",
+    "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
   }
 }
