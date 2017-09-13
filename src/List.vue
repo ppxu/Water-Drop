@@ -15,10 +15,10 @@
       </el-select>
       <el-button type="primary" @click="weekly">Export Weekly</el-button>
     </div>
-    <div v-for="cate in categories">
+    <div v-for="cate in categories" :key="cate.key">
       <h2 :id="cate.key">{{cate.label}}</h2>
       <ul>
-        <li v-for="post in list.filter(t => t.category === cate.key)">
+        <li v-for="post in list.filter(t => t.category === cate.key)" :key="post.objectId">
           <a :href="post.url" target="_blank">
             {{post.title}}
           </a>
@@ -42,15 +42,19 @@ AV.init({ appId, appKey })
 const categories = [
   {
     key: 'language',
-    label: '语言'
+    label: '要闻'
   },
   {
     key: 'tool',
-    label: '工具'
+    label: '开源'
   },
   {
     key: 'post',
     label: '文章'
+  },
+  {
+    key: 'study',
+    label: '教程'
   },
   {
     key: 'visual',
@@ -109,7 +113,11 @@ export default {
 
     genVers () {
       const days = moment().diff(moment(_start), 'days')
-      const sum = Math.ceil(days / 7)
+      let sum = Math.ceil(days / 7)
+
+      if(moment().day() === 5 && moment().hour() >= 12) {
+        sum += 1
+      }
 
       const opts = new Array(sum).fill('').map((t, idx) => ({
         version: _ver + idx,
@@ -211,6 +219,11 @@ img {
   right: 10px;
 }
 
+.el-select {
+  width: 300px;
+  margin-right: 10px;
+}
+
 a {
   display: inline-block;
   color: #20a0ff;
@@ -227,10 +240,5 @@ blockquote {
   margin: 10px;
   border-left: 4px solid #e2e3e4;
   line-height: 30px;
-}
-
-.el-select {
-  width: 300px;
-  margin-right: 10px;
 }
 </style>

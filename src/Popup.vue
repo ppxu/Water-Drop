@@ -10,7 +10,7 @@
     </div>
     <div class="detail">
       <p class="title">分类：</p>
-      <span v-for="cate in categories">
+      <span class="category" v-for="cate in categories" :key="cate.key">
         <input type="radio" :id="cate.key" :value="cate.key" v-model="category" />
         <label :for="cate.key">{{cate.label}}</label>
       </span>
@@ -39,15 +39,19 @@ const water = new WaterObject()
 const categories = [
   {
     key: 'language',
-    label: '语言'
+    label: '要闻'
   },
   {
     key: 'tool',
-    label: '工具'
+    label: '开源'
   },
   {
     key: 'post',
     label: '文章'
+  },
+  {
+    key: 'study',
+    label: '教程'
   },
   {
     key: 'visual',
@@ -81,7 +85,7 @@ export default {
     return {
       url: '',
       title: '',
-      categories: categories,
+      categories,
       category: 'other',
       description: '',
       tip: '',
@@ -97,13 +101,15 @@ export default {
   },
   methods: {
     getContent (callback) {
-      chrome.tabs.query({
-        active: true,
-        currentWindow: true
-      }, tabs => {
-        const tab = tabs[0]
-        callback(tab)
-      })
+      if(chrome && chrome.tabs && chrome.tabs.query) {
+        chrome.tabs.query({
+          active: true,
+          currentWindow: true
+        }, tabs => {
+          const tab = tabs[0]
+          callback(tab)
+        })
+      }
     },
 
     submit () {
@@ -133,9 +139,11 @@ export default {
     },
 
     query () {
-      chrome.tabs.create({
-        url: './list.html'
-      })
+      if(chrome && chrome.tabs && chrome.tabs.create) {
+        chrome.tabs.create({
+          url: './list.html'
+        })
+      }
     }
   }
 }
@@ -173,14 +181,19 @@ p {
   word-break: break-all;
 }
 
-span {
+.category {
   display: inline-block;
-  margin: 10px 20px 0 0;
+  margin-top: 10px;
+  width: 25%;
 }
 
 textarea {
-  width: 95%;
-  margin-top: 10px;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 5px;
+  resize: none;
 }
 
 button {
@@ -191,7 +204,7 @@ button {
   width: 70px;
   height: 30px;
   float: right;
-  margin-right: 10px;
+  margin: 10px 0 0 10px;
   outline: none;
   cursor: pointer;
 }
@@ -208,7 +221,7 @@ button:hover {
   height: 20px;
   line-height: 20px;
   text-align: center;
-  background-color: #20a0ff;
+  background-color: rgba(32, 160, 255, 0.8);
   color: #fff;
   height: 30px;
   line-height: 30px;

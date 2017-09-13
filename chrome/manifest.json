@@ -3,7 +3,7 @@
 
   "name": "Water Drop",
   "description": "Collect Water Drop From Internet",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "icons": { "128": "icon_128.png" },
 
   "browser_action": {
@@ -14,7 +14,5 @@
 
   "permissions": [
     "activeTab", "tabs"
-  ],
-
-  "update_url": "https://ppxu.now.sh/downloads/updates.xml"
+  ]
 }
